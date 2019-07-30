@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+open RFH, "/dev/urandom";
+
+my $r;
+sysread RFH, $r, 16;
+print "$r";

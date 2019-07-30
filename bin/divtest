@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+my $multiplier = 1;
+my @denominators;
+
+while (@ARGV) {
+  my $arg = pop(@ARGV);
+  if ($arg =~ s/^\*//) {
+    $multiplier *= $arg
+  } 
+  elsif ($arg =~ s/^\%//) {
+    unshift(@denominators, $arg);
+  }
+}
+
+
+    my $out_line = "";
+    $out_line .= sprintf("%9s: %15s", "N", "*$multiplier");
+    foreach my $d (@denominators) {
+      $out_line .= sprintf(" %5s" ,   "%$d");
+    }
+    print "$out_line\n";
+
+while (<> ) {
+  chomp;
+  my @numerators = split(' ');
+  foreach my $n (@numerators) {
+    my $out_line = "";
+    $out_line .= sprintf("%9d: %15d", $n, $n*$multiplier);
+    foreach my $d (@denominators) {
+      $out_line .= sprintf(" %5d" ,  $n*$multiplier % $d);
+    }
+    print "$out_line\n";
+  }
+}
+
+

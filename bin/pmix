@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$1" = '-0' ] ; then
+  dd if=/dev/zero bs=512 count=1
+  shift
+fi
+cat $* | xargs cat 

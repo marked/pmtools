@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+my $cmd = shift(@ARGV);
+
+if ($ARGV[0] =~ /^-/) {
+  $cmd .= " " . shift(@ARGV);
+}
+
+print "Executing:\n";
+my $last = '';
+while(my $dl = <>) {
+  chomp $dl;
+
+  $dl =~ tr/:/ /;
+  $dl =~ s/[ ]+$//;
+
+  my $full = "$cmd $dl $last";
+  print "$full\n";
+
+  $last = `$full`;
+  chomp $last;
+}
+print "Last output: $last\n";

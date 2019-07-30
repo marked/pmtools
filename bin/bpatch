@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+if (@ARGV < 1 || $ARGV[0] eq '-h') {
+    print "Usage: $0 target_file patch_file [ patch_file_2 .. ]\n";
+    exit (1);
+}
+
+my $fn = shift @ARGV;
+open(FH, "+<", "$fn") || die "Unable to open $fn\n";
+
+while (@ARGV >= 1) {
+    my $offset = shift @ARGV;
+    my $binaryblob = "";
+    my $len;
+    if (open PH, "<", $offset) {
+	undef $/; 
+	$binaryblob = <PH>;
+	close PH;
+	
+	$offset =~ s/\..*//g; # nixes any file extension
+	
+	sysseek(FH, $offset, 0);
+	syswrite(FH, $binaryblob);
+	$len = length($binaryblob);
+    } 
+    else {
+	$len = 0;
+   	$binaryblob = "Unable to open";
+    }
+    printf ("$len @ $offset: $binaryblob\n");
+}
+
+close FH;
